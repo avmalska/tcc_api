@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from routes import main_router
 from repository.mongo_database import MongoDatabase
 from algorithms.kmeans import Kmeans
+from algorithms.pca import Pca
 
 
 app = FastAPI()
@@ -22,3 +23,4 @@ app.include_router(main_router)
 def on_startup():
     MongoDatabase.initialize()
     Kmeans.calculate_kmeans()
+    Pca.innitialize()

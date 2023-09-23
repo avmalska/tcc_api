@@ -1,17 +1,24 @@
 from sklearn.decomposition import PCA
 from repository.players import PlayersRepository
 import pandas as pd
+from constants.default_values import default_fields
+from typing import TypedDict
 
-campos_pca_default = ["kdr", "kpr", "awpKpr", "adr", "aud", "kast",
-                      "multiKills", "openingRatio", "clutchesRatio", "flashTimeMean", "rating"]
+
+class PcaComponents(TypedDict):
+    x: list[float]
+    y: list[float]
 
 
 class Pca:
-    pca: PCA = None
+    model: PCA = None
+    principal_components: PcaComponents = None
 
     @staticmethod
     def innitialize():
-        df = pd.DataFrame(PlayersRepository.getAllPlayers())[campos_pca_default]
+        df = pd.DataFrame(PlayersRepository.getAllPlayers())[default_fields]
 
-        Pca.pca = PCA(n_components=2)
-        Pca.pca.fit(df)
+        Pca.model = PCA(n_components=2)
+        Pca.model.fit(df)
+        pca_transform = Pca.model.transform(df)
+        Pca.principal_components = {"x": pca_transform[:, 0], "y": pca_transform[:, 1]}
