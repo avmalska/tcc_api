@@ -10,12 +10,10 @@ class Kmeans:
     labels: list[int] = None
 
     @staticmethod
-    def calculate_kmeans(campos_kmeans: list[str] = None):
+    def innitialize():
         n_clusters = 5
-        if campos_kmeans is None:
-            campos_kmeans = [x for x in default_fields]
         players_df_completo = pd.DataFrame(PlayersRepository.getAllPlayers())
-        players_df = players_df_completo[campos_kmeans]
+        players_df = players_df_completo[default_fields]
         kmeans = KMeans(n_clusters=n_clusters, init='k-means++', n_init=10, random_state=0)
         kmeans.fit(players_df)
         Kmeans.labels = kmeans.labels_

@@ -1,67 +1,68 @@
 from dataclasses import dataclass
+from pydantic import BaseModel
 
 
 @dataclass
 class Player:
     steamID: str
     playerName: str
-    kills: int
-    deaths: int
+    kills: float
+    deaths: float
     kdr: float
     kpr: float
-    awpKills: int
+    awpKills: float
     awpKpr: float
     adr: float
     aud: float
     kast: float
-    roundsPlayed: int
-    multiKills: int
-    tradedKills: int
-    tradedDeaths: int
-    firstKills: int
-    firstDeaths: int
+    roundsPlayed: float
+    multiKills: float
+    tradedKills: float
+    tradedDeaths: float
+    firstKills: float
+    firstDeaths: float
     openingRatio: float
-    clutches: int
+    clutches: float
     clutchesRatio: float
-    successFlashes: int
-    flashAssists: int
+    successFlashes: float
+    flashAssists: float
     flashTime: float
     flashTimeMean: float
     headshotPerc: float
     rating: float
-    assists: int
-    gamesPlayed: int
+    assists: float
+    gamesPlayed: float
 
     @staticmethod
     def from_dict(obj: dict) -> 'Player':
         steamID = str(obj.get("steamID"))
         playerName = str(obj.get("playerName"))
-        kills = int(obj.get("kills"))
-        deaths = int(obj.get("deaths"))
+        kills = float(obj.get("kills"))
+        deaths = float(obj.get("deaths"))
         kdr = float(obj.get("kdr"))
         kpr = float(obj.get("kpr"))
-        awpKills = int(obj.get("awpKills"))
+        awpKills = float(obj.get("awpKills"))
         awpKpr = float(obj.get("awpKpr"))
         adr = float(obj.get("adr"))
         aud = float(obj.get("aud"))
         kast = float(obj.get("kast"))
-        roundsPlayed = int(obj.get("roundsPlayed"))
-        multiKills = int(obj.get("multiKills"))
-        tradedKills = int(obj.get("tradedKills"))
-        tradedDeaths = int(obj.get("tradedDeaths"))
-        firstKills = int(obj.get("firstKills"))
-        firstDeaths = int(obj.get("firstDeaths"))
+        roundsPlayed = float(obj.get("roundsPlayed"))
+        multiKills = float(obj.get("multiKills"))
+        tradedKills = float(obj.get("tradedKills"))
+        tradedDeaths = float(obj.get("tradedDeaths"))
+        firstKills = float(obj.get("firstKills"))
+        firstDeaths = float(obj.get("firstDeaths"))
         openingRatio = float(obj.get("openingRatio"))
-        clutches = int(obj.get("clutches"))
+        clutches = float(obj.get("clutches"))
         clutchesRatio = float(obj.get("clutchesRatio"))
-        successFlashes = int(obj.get("successFlashes"))
-        flashAssists = int(obj.get("flashAssists"))
+        successFlashes = float(obj.get("successFlashes"))
+        flashAssists = float(obj.get("flashAssists"))
         flashTime = float(obj.get("flashTime"))
         flashTimeMean = float(obj.get("flashTimeMean"))
         headshotPerc = float(obj.get("headshotPerc"))
         rating = float(obj.get("rating"))
-        assists = int(obj.get("assists"))
-        gamesPlayed = int(obj.get("gamesPlayed"))
+        assists = float(obj.get("assists"))
+        gamesPlayed = float(obj.get("gamesPlayed"))
         return Player(steamID, playerName, kills, deaths, kdr, kpr, awpKills, awpKpr, adr, aud, kast, roundsPlayed,
                       multiKills, tradedKills, tradedDeaths, firstKills, firstDeaths, openingRatio, clutches,
                       clutchesRatio, successFlashes, flashAssists, flashTime, flashTimeMean, headshotPerc, rating,
@@ -80,3 +81,54 @@ class Player:
                         "flashTimeMean": self.flashTimeMean, "headshotPerc": self.headshotPerc, "rating": self.rating,
                         "assists": self.assists, "gamesPlayed": self.gamesPlayed}
         return result
+
+
+class NewPlayerIncoming(BaseModel):
+    kdr: float
+    kpr: float
+    awpKpr: float
+    adr: float
+    aud: float
+    kast: float
+    multiKills: float
+    openingRatio: float
+    clutchesRatio: float
+    flashTimeMean: float
+    rating: float
+
+
+class NewPlayer:
+    kdr: float
+    kpr: float
+    awpKpr: float
+    adr: float
+    aud: float
+    kast: float
+    multiKills: float
+    openingRatio: float
+    clutchesRatio: float
+    flashTimeMean: float
+    rating: float
+
+    def to_df_dict(self) -> dict:
+        result: dict = {"kdr": [self.kdr], "kpr": [self.kpr], "awpKpr": [self.awpKpr], "adr": [self.adr],
+                        "aud": [self.aud], "kast": [self.kast], "multiKills": [self.multiKills],
+                        "openingRatio": [self.openingRatio], "clutchesRatio": [self.clutchesRatio],
+                        "flashTimeMean": [self.flashTimeMean], "rating": [self.rating]}
+        return result
+
+    @staticmethod
+    def from_incoming(incoming_player: NewPlayerIncoming):
+        new_player = NewPlayer()
+        new_player.kdr = incoming_player.kdr
+        new_player.kpr = incoming_player.kpr
+        new_player.awpKpr = incoming_player.awpKpr
+        new_player.adr = incoming_player.adr
+        new_player.aud = incoming_player.aud
+        new_player.kast = incoming_player.kast
+        new_player.multiKills = incoming_player.multiKills
+        new_player.openingRatio = incoming_player.openingRatio
+        new_player.clutchesRatio = incoming_player.clutchesRatio
+        new_player.flashTimeMean = incoming_player.flashTimeMean
+        new_player.rating = incoming_player.rating
+        return new_player

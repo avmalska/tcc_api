@@ -3,6 +3,8 @@ from fastapi import APIRouter
 from repository.players import PlayersRepository
 from algorithms.kmeans import Kmeans
 from algorithms.pca import Pca
+from algorithms.knn import Knn
+from model.player import NewPlayerIncoming, NewPlayer
 
 router = APIRouter()
 
@@ -17,11 +19,9 @@ async def get_all_players():
     return players_df.join(algorithms_df).to_dict("records")
 
 
-@router.post("/kmeans")
-async def get_kmeans_labels(campos_kmeans: list[str]):
-    return Kmeans.calculate_kmeans(campos_kmeans)
-
-
-@router.post("/pca")
-async def get_pca_labels():
+@router.post("/eval")
+async def evaluate_new_player(new_player_incoming: NewPlayerIncoming):
+    new_player = NewPlayer.from_incoming(new_player_incoming)
+    Knn.evaluate_new_player(new_player)
     return True
+

@@ -13,6 +13,7 @@ class PcaComponents(TypedDict):
 class Pca:
     model: PCA = None
     principal_components: PcaComponents = None
+    components_2d_array: list[list[float]] = None
 
     @staticmethod
     def innitialize():
@@ -21,4 +22,5 @@ class Pca:
         Pca.model = PCA(n_components=2)
         Pca.model.fit(df)
         pca_transform = Pca.model.transform(df)
+        Pca.components_2d_array = pca_transform
         Pca.principal_components = {"x": pca_transform[:, 0], "y": pca_transform[:, 1]}
