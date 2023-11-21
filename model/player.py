@@ -84,6 +84,8 @@ class Player:
 
 
 class NewPlayerIncoming(BaseModel):
+    steamID: str
+    name: str
     kdr: float
     kpr: float
     awpKpr: float
@@ -98,6 +100,8 @@ class NewPlayerIncoming(BaseModel):
 
 
 class NewPlayer:
+    steamID: str
+    name: str
     kdr: float
     kpr: float
     awpKpr: float
@@ -120,6 +124,8 @@ class NewPlayer:
     @staticmethod
     def from_incoming(incoming_player: NewPlayerIncoming):
         new_player = NewPlayer()
+        new_player.steamID = incoming_player.steamID
+        new_player.name = incoming_player.name
         new_player.kdr = incoming_player.kdr
         new_player.kpr = incoming_player.kpr
         new_player.awpKpr = incoming_player.awpKpr

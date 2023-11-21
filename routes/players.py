@@ -22,6 +22,6 @@ async def get_all_players():
 @router.post("/eval")
 async def evaluate_new_player(new_player_incoming: NewPlayerIncoming):
     new_player = NewPlayer.from_incoming(new_player_incoming)
-    Knn.evaluate_new_player(new_player)
-    return True
+    new_player_cluster = Knn.evaluate_new_player(new_player)
+    return new_player_cluster
 
